@@ -1,0 +1,426 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layaout"
+      layout:decorate="~{layout}">
+    <body layout:fragment="body">
+        <div class="text-center">
+            <div class="row">
+                <div class="col">
+                    <h1 >  Usuario</h1>
+                </div>            </div>
+            <div class="container">             
+                <form th:action="@{/usuario/form}" method="post" th:object="${usuariodireccion}" enctype="multipart/form-data">
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <input type="hidden" th:field="*{usuario.idusuario}">
+
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" onkeypress="return sololetras(event, 'lblNombre', 'iptnombre')" id="iptnombre" placeholder="Nombre" th:field="*{usuario.nombre}">
+                            <label id="lblNombre"></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.nombre')}" th:errors="*{usuario.nombre}"></label>
+                        </div>
+                        <div class="col-md-3">
+
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" onkeypress="return sololetras(event, 'lblApellidoPaterno', 'iptApellidopaterno')" id="iptApellidopaterno" placeholder="Apellido Paterno" th:field="*{usuario.apellidopaterno}">
+                            <label id="lblApellidoPaterno"></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.apellidopaterno')}" th:errors="*{usuario.apellidopaterno}"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>                    
+                            <input type="text" class="form-control" onkeypress="return sololetras(event, 'lbapellidoMaterno', 'iptAppelidomaterno')" id="iptAppelidomaterno" placeholder="Apellido Materno" th:field="*{usuario.apellidomaterno}">
+                            <label id="lbapellidoMaterno"></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.apellidomaterno')}" th:errors="*{usuario.apellidomaterno}"></label>
+                        </div>
+                        <div  class="col-md-3"> 
+                            <div class="form-group">
+                            <label for="imagenFile">Imagen:</label>
+                            <input type="file" class="form-control" name="imagenFile" id="imagenFile" onchange="mostrarVistaPrevia()">
+                        </div>
+
+                        <div class="form-group">
+                            <img  th:if="imagen!=null" id="vistaPrevia" th:src="'data:text/html;base64,'+*{usuario.imagen}" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                            <img  th:if="imagen==null" src="../static/Imagen/Userprueba.png" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                        </div>
+<!--                            <div   class="input-group mb-3">
+                                <label class="input-group-text" for="inputGroupFile01">Imagen</label>
+                                <input  type="file" class="form-control" id="imagenFile" onchange="mostrarVistaPrevia()">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span th:if="imagen==null">WNTRRO</span>
+                                <img th:if="imagen!=null" th:src="'data:text/html;base64,'+*{usuario.imagen}" id="vistaPrevia" alt="Vista previa de la imagen" style="max-width: 100%; max-height: 200px;">
+                                 <img th:if="imagen!=null" th:src="'data:text/html;base64,'+*{usuario.imagen}">
+                                 <img th:if="imagen==null" id="vistaPrevia" alt="Vista previa de la imagen" src="../static/Imagen/Userprueba.png">
+                               
+                            </div>-->
+
+                        </div>
+
+                        <div class="row gy-2"> 
+                            <div class="col-md-3">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-pin"></i></span>                            
+                                <input type="text" class="form-control" id="iptcorreo" placeholder="Correo" th:field="*{usuario.email}" >
+                                <label id="lblcorreo"></label>
+                                <label class="text-danger" th:if="${#fields.hasErrors('usuario.email')}" th:errors="*{usuario.email}"></label>
+                            </div>
+                            <div class="col-md-3">
+                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-pin"></i></span>                            
+                                <input type="text" class="form-control" id="iptcorreovalidacion" placeholder="Confirma Correo" >
+                                <label id="lblcorreo"></label>
+                                <input type="button" class="btn btn-primary" onclick=" return Correo('lblcorreo', 'iptcorreovalidacion')" value="Confirma correo">
+
+                            </div>
+                            <div class="col-md-3">
+                                <!--                                <input type="button" class="btn btn-primary"  placeholder="Confirma Correo" >-->
+
+                            </div>
+                            <!--                            <input value="Valdar correo" onclick=" return Correo('lblcorreo, iptcorreo')" />-->
+                        </div>
+                    </div>
+                    <div class="row gy-2">
+
+                        <div class="col-md-3">
+                            <label class="visually-hidden" for="specificSizeInputName"><i class="bi bi-collection-fill"></i></label>
+                            <input type="text" class="form-control" id="iptpassword" placeholder="Password" th:field="*{usuario.password}">
+                            <label id='lblpassword'></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.password')}" th:errors="*{usuario.password}"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="b"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" placeholder="Username" id="iptusername" onkeypress="return letrasynumeros(event, 'lblusername', 'iptusername')" th:field="*{usuario.username}" >
+                            <label id='lblusername'></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.username')}" th:errors="*{usuario.username}"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-phone"></i></span>
+                            <input type="text" class="form-control" id='ipttelefono' onkeypress="return Numeros(event, 'lbltelefono', 'ipttelefono')" placeholder="Telefono" th:field="*{usuario.telefono}">
+                            <label id="lbltelefono"></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.telefono')}" th:errors="*{usuario.telefono}"></label>
+                        </div>
+                        <div class="col-md-3"> <span class="input-group-text" id="basic-addon1">rol<i class="bi bi-person-add"></i></span>
+                            <select class="form-select" id="floatingSelect" th:field="*{usuario.rol.idrol}">
+                                <option value="0">Seleccione un rol</option>
+                                <option th:each="rol : ${roles}" th:value="${rol.idrol}" th:text="${rol.nombre}"></option>
+                                <!--<label class="text-danger" th:if="${#fields.hasErrors('usuario.rol.idrol')}" th:errors="*{usuario.rol.idrol}"></label>-->
+                            </select> </div>
+                        <div class="row gy-5"> 
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1">sexo<i class="bi bi-heart-arrow"></i></span>
+                            <select class="form-select" id="floatingSelect" th:field="*{usuario.sexo}">
+                                <option value="0">Seleccione un sexo</option>
+                                <option th:value="H">Hombre</option>
+                                <option th:value="'M'" >Mujer</option>
+                            </select>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.sexo')}" th:errors="*{usuario.sexo}"></label>
+
+                        </div>  
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-phone"></i></span>
+                            <input type="text" class="form-control" onkeypress="return Numeros(event, 'lbcelular', 'iptcelular')" id="iptcelular" placeholder="Celular" th:field="*{usuario.celular}">
+                            <label id="lbcelular"></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.celular')}" th:errors="*{usuario.celular}"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-phone"></i></span>
+                            <input type="text" class="form-control" placeholder="Curp"  required
+                                   minlength="18"
+                                   maxlength="18" id="iptcurp" onkeypress="return letrasynumeros(event, 'lbccurp', 'iptcurp')" th:field="*{usuario.curp}">
+                            <label id="lbccurp"></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('usuario.curp')}" th:errors="*{usuario.curp}"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-calendar"></i></span>
+                            <input type="date" class="form-control"  id="fechanacimiento" name="fechanacimiento" th:field="*{usuario.fechanacimiento}">
+
+                        </div>
+                        <div class="row gy-5"> </div>
+                    </div>
+
+
+                    <div class="row"> 
+                        <div class="col-md-4">
+                            <span class="input-group-text" id="iptcalle"><i class="bi bi-pencil">Calle</i></span>
+                            <input type="text" class="form-control"  id="Calle" name="Calle" onkeypress="return letrasynumeros(event, 'lblcalle', 'iptcalle')" th:field="*{direccion.calle}">
+                            <label id='lblcalle'></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('direccion.calle')}" th:errors="*{direccion.calle}"></label>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="input-group-text" id="ss"><i class="bi bi-pencil">Numero Exterior</i></span>
+                            <input type="text" class="form-control"  id="NumeroExterior" name="NumeroExterior" onkeypress="return letrasynumeros(event, 'ilbnumeroexterior', 'NumeroExterior')" th:field="*{direccion.numeroexterior}">
+                            <label id='ilbnumeroexterior'></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('direccion.numeroexterior')}" th:errors="*{direccion.numeroexterior}"></label>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="input-group-text" id="ilbnumeroexteridor"><i class="bi bi-pencil">Numero interior</i></span>
+                            <input type="text" class="form-control"  id="NumeroInterior" name="NumeroExterior" onkeypress="return letrasynumeros(event, 'ilbnumerointerior', 'NumeroInterior')" th:field="*{direccion.numerointerior}">
+                            <label id='ilbnumerointerior'></label>
+                            <label class="text-danger" th:if="${#fields.hasErrors('direccion.numerointerior')}" th:errors="*{direccion.numerointerior}"></label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1">Pais<i class="bi bi-pencil"></i></span>
+                            <select class="form-select" aria-label="Default select example" name="direccion.estado.pais.idpais" id="ddlPais" >
+                                <option value="0">Seleccione un pais</option>
+                                <option th:each="pais : ${paises}" th:value="${pais.idpais}" th:text="${pais.nombre}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-journal-bookmark-fill"></i></span>
+
+                            <select th:if="${estados==null}"class="form-select" aria-label="Default select example" name="direccion.estado.idestado" id="ddlEstado" >
+                                <option value="0">Seleccione un estado null</option>
+                            </select>
+
+                            <select  th:if="${estados!=null}" class="form-select" aria-label="Default select example" name="direccion.estado.idestado" id="ddlEstado" >
+                                <option  th:each="esatdo : ${estados}" th:value="${esatdo.idestado}" th:text="${esatdo.nombre}">r</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <span  class="input-group-text" id="basic-addon1"><i class="bi bi-journal-bookmark-fill"></i></span>
+                            <select th:if="${municipio==null}" class="form-select" aria-label="Default select example" name="direccion.estado.idestado" id="ddlMunicipio">
+                                <option value="0">Seleccione un municipio</option>
+                            </select>
+                            <select th:if="${municipio!=null}" class="form-select" aria-label="Default select example" name="direccion.estado.idestado" id="ddlMunicipio">
+                                <option  th:each="muni : ${municipio}" th:value="${muni.idmunicipio}" th:text="${muni.nombre}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <span  class="input-group-text" id="basic-addon1"><i class="bi bi-journal-bookmark-fill"></i></span>
+                            <select th:if="${colonia==null}" class="form-select" aria-label="Default select example" name="direccion.estado.idestado" id="ddlColonia" th:field="*{direccion.colonia.idcolonia}" >
+                                <option value="0">Seleccione una colonia</option>
+                            </select>
+                            <select th:if="${colonia!=null}" class="form-select" aria-label="Default select example" name="direccion.estado.idestado" id="ddlColonia" th:field="*{direccion.colonia.idcolonia}" >
+                                <option th:each="col : ${colonia}" th:value="${col.idcolonia}" th:text="${col.nombre}"></option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row gy-5">
+                        <div class="col-md-3"> </div>
+                        <div class="col-md-3">
+
+                            <input type="submit" value="Guardar" onclick=" return Password('lblpassword', 'iptpassword')" /> 
+                        </div>
+                        <div class="col-md-3"> </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </body>
+
+</html>
+
+<script>
+    function sololetras(e, lbl, ipt) {
+
+        var letters = /^[A-Za-z]+$/;
+        var key = e.key;
+        if (key.match(letters))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo Letras";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function Numeros(e, lbl, ipt) {
+
+        var numbers = /^[0-9]+$/;
+        var key = e.key;
+        if (key.match(numbers))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo Numeros";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function Correo(lbl, ipt) {
+
+        // Get our input reference.
+        var emailField = document.getElementById('iptcorreo');
+        var emailconfirmacion = document.getElementById('iptcorreovalidacion');
+        // Define our regular expression.
+        var validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+
+        // Using test we can check if the text match the pattern
+        if (validEmail.test(emailField.value)) {
+            if (emailField == emailconfirmacion) {
+                document.getElementById(lbl).innerHTML = "";
+
+            } else {
+                document.getElementById(lbl).innerHTML = "Los correos no coinciden";
+                $("#" + lbl).css('color', 'red');
+                $("#" + ipt).css('border', '5px solid red');
+                return false;
+            }
+
+        } else {
+            document.getElementById(lbl).innerHTML = "Correo invalido";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function Password(lbl, ipt) {
+
+        // Get our input reference.
+
+        var passowordField = document.getElementById('iptpassword');
+
+        // Define our regular expression.
+        var validpassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/;
+
+        // Using test we can check if the text match the pattern
+        if (passowordField.test(validpassword.value)) {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+
+        } else {
+            document.getElementById(lbl).innerHTML = "Contrasenia incompleta";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function letrasynumeros(e, lbl, ipt) {
+
+        var letrasynumeros = /^[A-Za-z0-9\s]+$/g;
+        var key = e.key;
+        if (key.match(letrasynumeros))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo acepta numeros y letras, no caracteres especiales";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function novacio(e, lbl, ipt) {
+
+        var letrasynumeros = /^[A-Za-z0-9\s]+$/g;
+        var key = e.key;
+        if (key.match(letrasynumeros))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo acepta numeros y letras, no caracteres especiales";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function mostrarVistaPrevia() {
+        var input = document.getElementById('imagenFile');
+        var vistaPrevia = document.getElementById('vistaPrevia');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                vistaPrevia.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $(document).ready(function () {
+        $("#ddlPais").change(function () {
+            $.ajax({
+                type: "GET",
+                url: "/usuario/GetEstadoByPais", // La URL del controlador
+                dataType: "json",
+                data: {IdPais: $("#ddlPais").val()},
+                success: function (estados) {
+                    $("#ddlEstado").empty();
+                    $("#ddlEstado").append('<option value="0">' + 'Seleccione una estado' + '</option>');
+                    $.each(estados, function (i, estado) {
+                        $("#ddlEstado").append('<option value="'
+                                + estado.idestado + '">'
+                                + estado.nombre + '</option>');
+                    });
+                },
+                error: function () {
+                    alert("Error al obtener los datos.");
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#ddlEstado").change(function () {
+            $.ajax({
+                type: "GET",
+                url: "/usuario/GetMunicipioByEstado", // La URL del controlador
+                dataType: "json",
+                data: {IdEstado: $("#ddlEstado").val()},
+                success: function (municipios) {
+                    $("#ddlMunicipio").empty();
+                    $("#ddlMunicipio").append('<option value="0">' + 'Seleccione un municipios' + '</option>');
+                    $.each(municipios, function (i, municipio) {
+                        $("#ddlMunicipio").append('<option value="'
+                                + municipio.idmunicipio + '">'
+                                + municipio.nombre + '</option>');
+                    });
+                },
+                error: function () {
+                    alert("Error al obtener los datos.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $("#ddlMunicipio").change(function () {
+            $.ajax({
+                type: "GET",
+                url: "/usuario/GetColoniaByMunicipio", // La URL del controlador
+                dataType: "json",
+                data: {IdMunicipio: $("#ddlMunicipio").val()},
+                success: function (colonias) {
+                    $("#ddlColonia").empty();
+                    $("#ddlColonia").append('<option value="0">' + 'Seleccione una colonia' + '</option>');
+                    $.each(colonias, function (i, colonia) {
+                        $("#ddlColonia").append('<option value="'
+                                + colonia.idcolonia + '">'
+                                + colonia.nombre + '</option>');
+                    });
+                },
+                error: function () {
+                    alert("Error al obtener los datos.");
+                }
+            });
+        });
+    });
+
+
+</script>

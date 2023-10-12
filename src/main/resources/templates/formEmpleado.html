@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layaout"
+      layout:decorate="~{layout}">
+    <head> 
+        <title>Formulario empresa</title>
+        <!--<script src="content-script.js"></script>-->
+    </head>
+    <body layout:fragment="body">
+        <div class="text-center">
+            <div class="row">
+                <div class="col">
+                    <h1 >  Empleado</h1>
+                </div>            </div>
+            <div class="container">             
+                <form th:action="@{/empleado/form}" method="post" th:object="${empleado}" enctype="multipart/form-data">
+
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" id="iptnumeroempleado" placeholder="Numero empleado" onkeypress="return novacio(event, 'lblnumerorempleado', 'iptnumeroempleado')" th:field="*{numeroempleado}">
+                            <label id="lblnumerorempleado"></label>
+                            <label th:if="${#fields.hasErrors('numeroempleado')}" th:errors="*{numeroempleado}"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="hidden" th:field="*{idempleado}">
+
+
+
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" id="iptnombre" placeholder="Nombre" onkeypress="return sololetras(event, 'lblNombre', 'iptnombre')" th:field="*{nombre}">
+                            <label id="lblNombre"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" id="iptapellidopaterno" placeholder="Apellido paterno" onkeypress="return sololetras(event, 'lblapellidopaterno', 'iptapellidopaterno')" th:field="*{apellidopaterno}">
+                            <label id="lblapellidopaterno"></label>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" id="iptapellidomaterno" placeholder="Apellido materno" onkeypress="return sololetras(event, 'lblapellidomaterno', 'iptapellidomaterno')" th:field="*{apellidomaterno}">
+                            <label id="lblapellidomaterno"></label>
+                        </div>
+                        <div  class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" id="iptrfc" placeholder="RFC " onkeypress="return novacio(event, 'lblrfc', 'iptrfc')" th:field="*{rfc}">
+                            <label id="lblrfc"></label>
+                        </div>
+                        <div  class="col-md-3"> 
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" id="iptnss" placeholder="NSS" onkeypress="return Numeros(event, 'dss', 'iptnss')" th:field="*{nss}">
+                            <label id="dss"></label>
+                        </div>
+                        <div  class="col-md-3"> 
+                            <div class="form-group">
+                                <label for="imagenFile">Imagen:</label>
+                                <input type="file" class="form-control" name="imagenFile" id="imagenFile" onchange="mostrarVistaPrevia()">
+                            </div>
+
+                            <div class="form-group">
+                                <img  alt="Previsualizacion" id="vistaPrevia"/>
+                            </div>
+                        </div>
+                        <div  class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1">Empresa<i class="bi bi-pencil"></i></span>
+                            <select class="form-select" aria-label="Default select example" name="direccion.estado.pais.idpais" id="ddlPais" th:field="*{empresa.idempresa}">
+                                <option value="0">Seleccione una empresa</option>
+                                <option th:each="empresa : ${empresas}" th:value="${empresa.idempresa}" th:text="${empresa.nombre}" ></option>
+                            </select>
+                        </div> 
+                        <div  class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-phone"></i></span>
+                            <input type="text" class="form-control" id="ipttelefono" placeholder="Telefono de la empresa" onkeypress="return Numeros(event, 'lbltelefono', 'ipttelefono')" th:field                                    ="*{telefono}">
+                            <label id="lbltelefono"></label>
+                        </div>
+                        <div  class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" id="iptnombre" placeholder="Email" th:field="*{email}">
+                            <label id="lblemail"></label>
+                        </div>
+                        <div  class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-calendar"></i>fecha nacimiento</span>
+                            <input type="date" class="form-control"  id="fechanacimiento" name="fechanacimiento" th:field="*{fechanacimiento}">
+                        </div>
+                        <div  class="col-md-3">
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-calendar"></i>Fecha de ingreso</span>
+                            <input type="date" class="form-control"  id="fechanacimiento" name="fechanacimiento" th:field="*{fechaingreso}">
+
+                        </div>
+
+
+                        <div class="row gy-5">
+                            <div class="col-md-3"> </div>
+                            <input type="submit" value="Guardar" class="btn btn-success"/> 
+                            <div class="col-md-3"> </div>
+                        </div>
+                    </div>
+
+                </form>
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+    </body>
+
+</html>
+
+<script>
+
+    function sololetras(e, lbl, ipt) {
+
+        var letters = /^[A-Za-z]+$/;
+        var key = e.key;
+        if (key.match(letters))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo Letras";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function Numeros(e, lbl, ipt) {
+
+        var numbers = /^[0-9]+$/;
+        var key = e.key;
+        if (key.match(numbers))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo Numeros";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function Correo(lbl, ipt) {
+
+        // Get our input reference.
+        var emailField = document.getElementById('iptcorreo');
+        var emailconfirmacion = document.getElementById('iptcorreovalidacion');
+        // Define our regular expression.
+        var validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+
+        // Using test we can check if the text match the pattern
+        if (validEmail.test(emailField.value)) {
+            if (emailField == emailconfirmacion) {
+                document.getElementById(lbl).innerHTML = "";
+
+            } else {
+                document.getElementById(lbl).innerHTML = "Los correos no coinciden";
+                $("#" + lbl).css('color', 'red');
+                $("#" + ipt).css('border', '5px solid red');
+                return false;
+            }
+
+        } else {
+            document.getElementById(lbl).innerHTML = "Correo invalido";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function mostrarVistaPrevia() {
+        var input = document.getElementById('imagenFile');
+        var vistaPrevia = document.getElementById('vistaPrevia');
+        if (input.files && input.files[0])
+        {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                vistaPrevia.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+function novacio(e, lbl, ipt) {
+
+        var letrasynumeros = /^[A-Za-z0-9\s]+$/g;
+        var key = e.key;
+        if (key.match(letrasynumeros))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo acepta numeros y letras, no caracteres especiales";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+</script>

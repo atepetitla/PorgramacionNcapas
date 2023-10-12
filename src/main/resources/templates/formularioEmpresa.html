@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layaout"
+      layout:decorate="~{layout}">
+    <head> 
+        <title>Formulario empresa</title>
+        <!--<script src="content-script.js"></script>-->
+    </head>
+    <!--    <head> 
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+            <title>Agregar Usuario</title> 
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        </head>-->
+    <body layout:fragment="body">
+        <div class="text-center">
+            <div class="row">
+                <div class="col">
+                    <h1 >  Empresa</h1>
+                </div>            </div>
+            <div class="container">             
+                <form th:action="@{/empresa/form}" method="post" th:object="${empresa}">
+
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <input type="hidden" th:field="*{idempresa}">
+
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control" id="iptnombre" placeholder="Nombre de la empresa" onkeypress="return sololetras(event, 'lblNombre', 'iptnombre')" th:field="*{nombre}">
+                            <label id="lblNombre"></label>
+                            
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-phone"></i></span>
+                            <input type="text" class="form-control"nid="iptnombre" placeholder="Telefono de la empresa" onkeypress="return Numeros(event, 'lbltelefono', 'ipttelefono')" th:field="*{telefono}">
+                            <label id="lbltelefono"></label>
+                            
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control"nid="iptnombre" placeholder="Email de la empresa" th:field="*{email}">
+                            <label id="lblemail"></label>
+                            
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                            <input type="text" class="form-control"nid="iptnombre" placeholder="direccion de la empresa" th:field="*{direccionweb}">
+                            <label id="lbldireccion"></label>
+
+                        </div>
+                    </div>
+
+                    <div class="row gy-5">
+                        <div class="col-md-3"> </div>
+                        <input type="submit" value="Guardar" class="btn btn-success"/> 
+                        <div class="col-md-3"> </div>
+                    </div>
+
+                </form>
+
+
+
+
+
+
+
+            </div>
+        </div>
+        <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+    </body>
+
+</html>
+<script>
+
+function sololetras(e, lbl, ipt) {
+
+        var letters = /^[A-Za-z]+$/;
+        var key = e.key;
+        if (key.match(letters))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo Letras";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function Numeros(e, lbl, ipt) {
+
+        var numbers = /^[0-9]+$/;
+        var key = e.key;
+        if (key.match(numbers))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo Numeros";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function Correo(lbl, ipt) {
+
+        // Get our input reference.
+        var emailField = document.getElementById('iptcorreo');
+        var emailconfirmacion = document.getElementById('iptcorreovalidacion');
+        // Define our regular expression.
+        var validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+
+        // Using test we can check if the text match the pattern
+        if (validEmail.test(emailField.value)) {
+            if (emailField == emailconfirmacion) {
+                document.getElementById(lbl).innerHTML = "";
+
+            } else {
+                document.getElementById(lbl).innerHTML = "Los correos no coinciden";
+                $("#" + lbl).css('color', 'red');
+                $("#" + ipt).css('border', '5px solid red');
+                return false;
+            }
+
+        } else {
+            document.getElementById(lbl).innerHTML = "Correo invalido";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function Password(lbl, ipt) {
+
+        // Get our input reference.
+
+        var passowordField = document.getElementById('iptpassword');
+
+        // Define our regular expression.
+        var validpassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/;
+
+        // Using test we can check if the text match the pattern
+        if (passowordField.test(validpassword.value)) {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+
+        } else {
+            document.getElementById(lbl).innerHTML = "Contrasenia incompleta";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function letrasynumeros(e, lbl, ipt) {
+
+        var letrasynumeros = /^[A-Za-z0-9\s]+$/g;
+        var key = e.key;
+        if (key.match(letrasynumeros))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo acepta numeros y letras, no caracteres especiales";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+
+    function novacio(e, lbl, ipt) {
+
+        var letrasynumeros = /^[A-Za-z0-9\s]+$/g;
+        var key = e.key;
+        if (key.match(letrasynumeros))
+        {
+            document.getElementById(lbl).innerHTML = "";
+            return true;
+        } else
+        {
+            document.getElementById(lbl).innerHTML = "Solo acepta numeros y letras, no caracteres especiales";
+            $("#" + lbl).css('color', 'red');
+            $("#" + ipt).css('border', '5px solid red');
+            return false;
+        }
+    }
+</scrpt>

@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html  xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layaout"  layout:decorate="~{layout}">
+    <head> 
+        <title>Listado usuario</title>
+        <!--<script src="content-script.js"></script>-->
+    </head>
+    <body layout:fragment="body" >
+        <div class="container">
+            <form th:action="@{/usuario/listado}" method="post" th:object="${usuariobuscar}" >
+
+
+                <div class="row gy-5">
+
+                    <div class="col-md-3">                
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                        <input type="text" class="form-control" id="iptnombre" placeholder="Nombre" th:field="*{nombre}">
+                        <label id="lblNombre"></label>
+                    </div>
+                    <div class="col-md-3">                
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                        <input type="text" class="form-control" id="iptpaterno" placeholder="Apellido Paterno" th:field="*{apellidopaterno}">
+                        <label id="lblpaterno"></label>
+                    </div>
+                    <div class="col-md-3">                
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-add"></i></span>
+                        <input type="text" class="form-control" id="iptmaterno" placeholder="Apellido Materno" th:field="*{apellidomaterno}">
+                        <label id="lblmaterno"></label>
+                    </div>
+                    <div class="col-md-3"> <input type="submit" class="btn btn-info" value="Buscar"  ></div>
+                    <a th:href="@{/usuario/form/{idalumno}(idalumno=0)}" class="btn btn-success">Agregar</a>
+                </div>
+
+            </form>
+            <div class="text-center">
+                <div class="row">
+                    <div class="col">
+                        <h1 >  Usuarios</h1>
+                    </div>        
+                </div>
+                <div class="row">
+                    <div class="col">
+
+
+                        <table  id="myTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr class="table-dark">
+                                    <th>Eliminar</th>
+                                    <th>Imagen</th>                               
+                                    <th>Sobrenombre </th>
+                                    <th>Nombre Usuario </th>
+                                    <th>Email </th>
+                                    <th>Contrasenia </th>
+                                    <th>Fecha nacimiento </th>
+                                    <th>Sexo </th>
+                                    <th>Telefono</th>
+                                    <th>Celular</th>
+                                    <th>CURP</th>                             
+                                    <th>Puesto</th>
+                                    <th>Direccion</th>
+                                    <th>Status</th>
+                                    <th>Actualizar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="usuario : ${usuarios}" >
+
+                                    <td class="table-danger"> <a th:href="@{/usuario/delete/{idusuario}(idusuario=${usuario.idusuario})}" class="btn btn-danger"> <i class="bi bi-trash3-fill"></i></a>
+                                    </td>
+                                    <td> 
+
+                                        <img th:if="${usuario.imagen==null}" src="/Imagen/Userprueba.png">
+                                        <img th:if="${usuario.imagen!=null}"
+                                             th:src="'data:text/html;base64,'+${usuario.imagen}">
+                                    </td>
+                                    <td  th:text="${usuario.username}"></td>
+                                    <td>
+                                        <span th:text="${usuario.nombre}"></span>
+                                        <span th:text="${usuario.apellidopaterno}"></span>
+                                        <span th:text="${usuario.apellidomaterno}"></span>
+                                    </td>                   
+                                    <td  th:text="${usuario.email}"></td>
+                                    <td  th:text="${usuario.password}"></td>
+                                    <td  th:text="${usuario.fechanacimiento}"></td>
+                                    <td  th:text="${usuario.sexo}"></td>
+                                    <td  th:text="${usuario.telefono}"></td>
+                                    <td  th:text="${usuario.celular}"></td>
+                                    <td  th:text="${usuario.curp}"></td>                                                   
+                                    <td  th:text="${usuario.rol.nombre}"></td>
+                                    <td>
+                                        <span th:each="direccion : ${direcciones}"
+                                              th:if="${usuario.idusuario==direccion.usuario.idusuario}">
+                                            <span th:text="${direccion.calle}"></span>
+                                            <span th:text="${direccion.numeroexterior}"></span>
+                                            <span th:text="${direccion.numerointerior}"></span>
+                                            <span th:text="${direccion.colonia.nombre}"></span>
+                                            <span th:text="${direccion.colonia.codigopostal}"></span>
+                                            <span th:text="${direccion.colonia.municipio.nombre}"></span>
+                                            <span th:text="${direccion.colonia.municipio.estado.nombre}"></span>
+                                            <span th:text="${direccion.colonia.municipio.estado.pais.nombre}"></span>
+                                        </span>
+                                    </td>  
+                                    <td>
+                                        <div th:if="${usuario.status == 'N'}" class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" th:id="${usuario.idusuario}" onchange="changestatus(this)">
+                                        </div>
+                                        <div th:unless="${usuario.status == 'N'}" class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" th:id="${usuario.idusuario}" onchange="changestatus(this)" checked>
+                                        </div>
+                                    </td>
+                                    <td class="table-danger" >
+                                        <a th:href="@{/usuario/form/{idusuario}(idusuario=${usuario.idusuario})}" class="btn btn-success" >
+                                            <i class="bi bi-shop"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>  
+
+                </div>
+            </div>
+        </div>
+
+        <!--Tabla -->
+    </body>
+</html>
+
+
+<script>
+    function changestatus(e) {
+        var status = e.checked;
+        var idusuario = e.id;
+        $.ajax({
+            type: "GET",
+            url: "/usuario/changeStatus",
+            dataType: "json",
+            data: {idusuario: idusuario, status: status},
+            success: {},
+            error: function () {
+//                alert("Error al obtener los datos del usuario "+idusuario);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
